@@ -25,4 +25,4 @@ Const TOKEN = "...";
 
 # Run example
 
-node example.js
+`node example.js`
