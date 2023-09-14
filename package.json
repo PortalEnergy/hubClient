@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/PortalEnergy/hubClient/issues"
   },
-  "homepage": "https://github.com/PortalEnergy/hubClient#readme"
+  "homepage": "https://github.com/PortalEnergy/hubClient#readme",
+  "dependencies": {
+    "websocket": "^1.0.34"
+  }
 }
