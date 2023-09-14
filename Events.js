@@ -1,10 +1,11 @@
+import Websocket from "websocket"
+
 class Events {
     constructor(caller) {
         this.api = caller;
-        var WebSocketClient = require('websocket').client;
-
-        this.connection = new WebSocketClient();
         this.query = "";
+        this.statusConnection = false;
+        this.showlogs = true;
 
     }
 
@@ -28,36 +29,79 @@ class Events {
         this.query = "/?"+query;
     }
 
+    setLog(show){
+        self.showlogs = show;
+    }
+
+    reconnect(){
+        var self = this;
+
+        if(this.reconnectInterval){
+            return 
+        }
+
+        this.reconnectInterval = setInterval(function(){
+
+
+            if(!self.statusConnection){
+                console.log("I","Events","Try to reconnect")
+                self.run()
+            }
+
+        },5000)
+    }
+
     run(){
+        var self = this;
+        
+        this.connection = new Websocket.client();
+
         this.connection.on('connectFailed', function(error) {
-            console.log('Connect Error: ' + error.toString());
+  
+            if(self.showlogs) console.log("E","Events",'Connect Error: ' + error.toString());
+            self.statusConnection = false;
+            
         });
         
         this.connection.on('connect', function(connection) {
-            this.onConnectCallback(connection)
+            
+            self.statusConnection = true;
 
-            console.log('WebSocket Client Connected');
+            if(self.onConnectCallback)
+                self.onConnectCallback(connection)
+
+            
+            if(self.showlogs) console.log("I","Events",'WebSocket сonnected');
             
             connection.on('error', function(error) {
-                this.onErrorCallback(error)
-                console.log("Connection Error: " + error.toString());
+                if(self.onErrorCallback)
+                    self.onErrorCallback(error)
+                
+                if(self.showlogs) console.log("E","Events","Connection Error: " + error.toString());
+                
+                self.statusConnection = false;
+
             });
             
             connection.on('close', function() {
-                this.onCloseCallback()
-                console.log('echo-protocol Connection Closed');
+                if(self.onCloseCallback)
+                    self.onCloseCallback()
+                
+                    self.statusConnection = false;
+                
+                if(self.showlogs) console.log("I","Events",'Connection Closed');
+
             });
 
             connection.on('message', function(message) {
-                this.setOnMessageCallback(mesage)
-                if (message.type === 'utf8') {
-                    console.log("Received: '" + message.utf8Data + "'");
-                }
+                if(self.setOnMessageCallback)
+                    self.setOnMessageCallback(mesage)
             });
             
         });
         
         this.connection.connect(this.api.url.replace("http","ws")+"/ws/events"+this.query, 'echo-protocol', null,this.api.headers,null);
+        this.reconnect()
     }
 
 }
