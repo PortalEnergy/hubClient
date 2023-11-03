@@ -26,7 +26,7 @@ class Events {
     }
 
     setQuery(query){
-        this.query = "/?"+query;
+        this.query = "?"+query;
     }
 
     setLog(show){
@@ -95,7 +95,7 @@ class Events {
 
             connection.on('message', function(message) {
                 if(self.setOnMessageCallback)
-                    self.setOnMessageCallback(mesage)
+                    self.setOnMessageCallback(JSON.parse(message.utf8Data))
             });
             
         });
