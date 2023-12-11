@@ -68,10 +68,10 @@ class Station {
         }
     }
 
-    async getStations(){
+    async getStations(offset,limit){
 
         try {
-            return await this.api.get('/station/getStations')
+            return await this.api.get(`/station/getStations?offset=${offset}&limit=${limit}`)
         } catch (error) {
             console.log("E","getStations",error)
         }
