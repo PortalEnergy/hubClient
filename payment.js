@@ -46,6 +46,15 @@ class Payment {
         }
     }
 
+    async getTariffBySyncId(id){
+
+        try {
+            return await this.api.get('/payment/getTariffBySyncId/'+id)
+        } catch (error) {
+            console.log("E","getTariffBySyncId",error)
+        }
+    }
+
 
     async getInvoice(id){
 
