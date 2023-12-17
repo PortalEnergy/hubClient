@@ -134,6 +134,15 @@ class Transaction {
         }
     }
 
+    async addTransactionLocal(clientUrl,transactionId,connectorId,dateStart,dateStop,meterStart, meterStop){
+
+        try {
+            return await this.api.post('/transaction/addTransactionLocal', {clientUrl,transactionId,connectorId,dateStart,dateStop,meterStart,meterStop})
+        } catch (error) {
+            console.log("E","addTransactionLocal",error)
+        }
+    }
+
     async startTransaction(clientUrl,idTag,dateStart,meterStart){
 
         try {
