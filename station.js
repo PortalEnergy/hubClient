@@ -271,7 +271,7 @@ class Station {
     async updateIsActive(clientUrl,state){
 
         try {
-            return await this.api.post('/station/updateStationIsActive', {clientUrl,state})
+            return await this.api.post('/station/updateIsActive', {clientUrl,state})
         } catch (error) {
             console.log("E","updateIsActive",error)
         }
