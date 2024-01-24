@@ -153,6 +153,15 @@ class Station {
         }
     }
 
+    async transfer(clientUrl,to){
+
+        try {
+            return await this.api.post('/station/transfer', {clientUrl,to})
+        } catch (error) {
+            console.log("E","transfer",error)
+        }
+    }
+
     async bootNotification(clientUrl,timestamp){
 
         try {
@@ -197,6 +206,8 @@ class Station {
             console.log("E","updateStationUrl",error)
         }
     }
+
+
 
     async updateType(clientUrl,type){
 
