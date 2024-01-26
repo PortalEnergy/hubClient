@@ -59,6 +59,14 @@ class Hub {
             console.log("E","addPartner",error)
         }
     }
+
+    async me(){
+        try {
+            return await this.api.get('/hub/me')
+        } catch (error) {
+            console.log("E","me",error)
+        }        
+    }
 }
 
 export default Hub
